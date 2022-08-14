@@ -22,7 +22,7 @@ export const MahjongTile = ({ mahjong, onClick }: MahjongTileProps) => {
       >
         <img
           style={{ height: "100%", width: "100%" }}
-          src={`/tiles/${mahjong.nameEng}.png`}
+          src={`../tiles/${mahjong.nameEng}.png`}
           alt={mahjong.nameEng}
         ></img>
       </div>

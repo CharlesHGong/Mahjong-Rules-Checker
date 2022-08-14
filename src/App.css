@@ -6,3 +6,12 @@ html, body, #root {
   margin:0px;
   height:100%;
 }
+
+table, th, td {
+  border: 1px solid black;
+}
+
+table {
+  width: 100%;
+  table-layout: fixed;
+}

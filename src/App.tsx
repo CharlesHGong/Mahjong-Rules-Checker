@@ -36,6 +36,22 @@ type Game = {
   players: Player[];
 };
 
+const positions = [
+  "一",
+  "二",
+  "三",
+  "四",
+  "五",
+  "六",
+  "七",
+  "八",
+  "九",
+  "十",
+  "十一",
+  "十二",
+  "十三",
+  "听",
+];
 function App() {
   const [game, setGame] = useState<Game>(defaultGame);
   const [finalResultDialogOpen, setFinalResultDialogOpen] = useState(false);
@@ -48,7 +64,7 @@ function App() {
 
   const handleSelectMahjongs = (mahjong: Mahjong) => {
     if (selectedMahjongs.length < 14) {
-      setSelectedMahjongs(sortMahjongs([...selectedMahjongs, mahjong]));
+      setSelectedMahjongs([...selectedMahjongs, mahjong]);
     }
   };
 
@@ -104,14 +120,39 @@ function App() {
 
           <div>
             <Typography variant="h5">Selected mahjongs</Typography>
-            <div style={finalResultStyle}>
-              {selectedMahjongs.map((mj) => (
-                <MahjongTile
-                  mahjong={mj}
-                  onClick={() => handleSelectMahjongs(mj)}
-                />
-              ))}
-            </div>
+            <table>
+              <tbody>
+                <tr>
+                  {new Array(7).fill(0).map((_, i) => (
+                    <td>{positions[i]}</td>
+                  ))}
+                </tr>
+                <tr style={{ height: 50 }}>
+                  {new Array(7).fill(0).map((_, i) => (
+                    <td>
+                      {selectedMahjongs[i] && (
+                        <MahjongTile mahjong={selectedMahjongs[i]} />
+                      )}
+                    </td>
+                  ))}
+                </tr>
+                <tr>
+                  {new Array(7).fill(0).map((_, i) => (
+                    <td>{positions[i + 7]}</td>
+                  ))}
+                </tr>
+                <tr style={{ height: 50 }}>
+                  {new Array(7).fill(0).map((_, i) => (
+                    <td>
+                      {selectedMahjongs[i + 7] && (
+                        <MahjongTile mahjong={selectedMahjongs[i + 7]} />
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              </tbody>
+            </table>
+
             <Button variant="contained" onClick={() => handleCalculateClick()}>
               Calculate
             </Button>
