@@ -1,16 +1,21 @@
-import { Profile } from "./components/Profile";
 import "./App.css";
 import { useState } from "react";
-import { defaultGame, playerStyles } from "./configs/config";
+import { defaultGame } from "./configs/config";
 import {
   Mahjong,
   mahjongs,
   normalType,
   specialMahjongs,
+  windType,
 } from "./configs/mahjongs";
-import { calculate, sortMahjongs } from "./utils/utils";
+import { calculate, OtherGameResult } from "./utils/utils";
 import { MahjongTile } from "./components/Mahjong";
-import { Button, Typography } from "@mui/material";
+import {
+  Button,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography,
+} from "@mui/material";
 import { FinalResult } from "./utils/utils";
 import { HuResultDialog } from "./components/HuResultDialog";
 
@@ -52,8 +57,19 @@ const positions = [
   "十三",
   "听",
 ];
+
+const defaultOtherGameResult: OtherGameResult = {
+  gang: 0,
+  hua: 0,
+  jufeng: windType[0],
+  menfeng: windType[0],
+};
+
 function App() {
   const [game, setGame] = useState<Game>(defaultGame);
+  const [otherGameResult, setOtherGameResult] = useState<OtherGameResult>(
+    defaultOtherGameResult
+  );
   const [finalResultDialogOpen, setFinalResultDialogOpen] = useState(false);
   const [selectedMahjongs, setSelectedMahjongs] = useState<Mahjong[]>([]);
   const [lastResult, setLastResult] = useState<FinalResult>({
@@ -153,9 +169,70 @@ function App() {
               </tbody>
             </table>
 
-            <Button variant="contained" onClick={() => handleCalculateClick()}>
-              Calculate
-            </Button>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                margin: "10px 30px",
+              }}
+            >
+              <div style={{ flexGrow: 1 }}>
+                <div style={{ height: 30, textAlign: "left" }}>
+                  杠
+                  <ToggleButtonGroup
+                    style={{ height: 20 }}
+                    value={otherGameResult.gang}
+                    exclusive
+                    onChange={(_, v: number) =>
+                      setOtherGameResult({ ...otherGameResult, gang: v })
+                    }
+                  >
+                    <ToggleButton value={0}>0</ToggleButton>
+                    <ToggleButton value={1}>1</ToggleButton>
+                    <ToggleButton value={2}>2</ToggleButton>
+                    <ToggleButton value={3}>3</ToggleButton>
+                    <ToggleButton value={4}>4</ToggleButton>
+                  </ToggleButtonGroup>
+                </div>
+                <div style={{ height: 30, textAlign: "left" }}>
+                  圈风
+                  <ToggleButtonGroup
+                    style={{ height: 20 }}
+                    value={otherGameResult.jufeng}
+                    exclusive
+                    onChange={(_, v: typeof windType[number]) =>
+                      setOtherGameResult({ ...otherGameResult, jufeng: v })
+                    }
+                  >
+                    {windType.map((wt) => (
+                      <ToggleButton value={wt}>{wt}</ToggleButton>
+                    ))}
+                  </ToggleButtonGroup>
+                </div>
+                <div style={{ height: 30, textAlign: "left" }}>
+                  门风
+                  <ToggleButtonGroup
+                    style={{ height: 20 }}
+                    value={otherGameResult.menfeng}
+                    exclusive
+                    onChange={(_, v: typeof windType[number]) =>
+                      setOtherGameResult({ ...otherGameResult, menfeng: v })
+                    }
+                  >
+                    {windType.map((wt) => (
+                      <ToggleButton value={wt}>{wt}</ToggleButton>
+                    ))}
+                  </ToggleButtonGroup>
+                </div>
+              </div>
+              <Button
+                style={{ width: "100px", height: "100%" }}
+                variant="contained"
+                onClick={() => handleCalculateClick()}
+              >
+                Calculate
+              </Button>
+            </div>
           </div>
 
           <div>

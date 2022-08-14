@@ -35,7 +35,6 @@ export const calculate = (mahjongs: Mahjong[]): FinalResult => {
     return { score: 0, huRules: [], mahjongs };
   }
   const huResult = checkHu(mahjongs);
-  console.log(huResult);
 
   let score = 0;
   let excludeRules = new Set();
@@ -44,17 +43,6 @@ export const calculate = (mahjongs: Mahjong[]): FinalResult => {
   for (let i = 0; i < rules.length; i++) {
     if (!excludeRules.has(rules[i].name)) {
       const { check, score: ruleScore, excludeOtherRules } = rules[i];
-      console.log(
-        "check",
-        rules[i].name,
-        check(huResult, mahjongs, {
-          //TODO
-          gang: 0,
-          hua: 0,
-          jufeng: "东",
-          menfeng: "东",
-        })
-      );
       if (
         check(huResult, mahjongs, {
           //TODO

@@ -1,5 +1,7 @@
 import { IconButton } from "@mui/material";
+import { TileImages } from "../assets/tiles";
 import { Mahjong } from "../configs/mahjongs";
+import Front from "../assets/tiles/Front.png";
 
 export type MahjongTileProps = {
   mahjong: Mahjong;
@@ -15,14 +17,14 @@ export const MahjongTile = ({ mahjong, onClick }: MahjongTileProps) => {
           width: 30,
           padding: 5,
           boxSizing: "border-box",
-          backgroundImage: "url(./tiles/Front.png)",
+          backgroundImage: `url(${Front})`,
           backgroundSize: "cover",
         }}
         onClick={onClick}
       >
         <img
           style={{ height: "100%", width: "100%" }}
-          src={`../tiles/${mahjong.nameEng}.png`}
+          src={TileImages[mahjong.nameEng]}
           alt={mahjong.nameEng}
         ></img>
       </div>
