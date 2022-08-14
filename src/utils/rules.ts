@@ -88,7 +88,7 @@ const oneNineMahjongNames = ["一", "九"].flatMap((n) =>
 //十三幺
 export const checkRule7: CheckRule = (_, mahjongs) => {
   const yao = [...oneNineMahjongNames, ...windType, ...dragonType];
-  return mahjongs.every((mj) => yao.includes(mj.name));
+  return yao.every(name => mahjongs.some(mj => mj.name === name));
 };
 
 //清幺九
@@ -129,7 +129,8 @@ export const checkRule11: CheckRule = (huResult, mahjongs) => {
 //TODO an
 //四暗刻
 export const checkRule12: CheckRule = (huResult) => {
-  return huResult.hu && huResult.groups.every((g) => g.type === "刻");
+  return false;
+  //return huResult.hu && huResult.groups.every((g) => g.type === "刻");
 };
 
 //一色双龙会
