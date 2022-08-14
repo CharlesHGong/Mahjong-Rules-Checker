@@ -76,6 +76,7 @@ function App() {
     score: 0,
     huRules: [],
     mahjongs: [],
+    huResult: { hu: false },
   });
 
   const handleSelectMahjongs = (mahjong: Mahjong) => {
@@ -86,7 +87,6 @@ function App() {
 
   const handleCalculateClick = () => {
     setLastResult(calculate(selectedMahjongs));
-    setSelectedMahjongs([]);
   };
 
   const handleClearClick = () => {
@@ -111,6 +111,13 @@ function App() {
           <div>
             <Typography variant="h5">
               Final Result: {lastResult.score}
+              <Button
+                variant="text"
+                onClick={() => setFinalResultDialogOpen(true)}
+                size="small"
+              >
+                Details
+              </Button>
             </Typography>
             <div style={finalResultStyle}>
               {lastResult.mahjongs.map((mj) => (
@@ -121,12 +128,6 @@ function App() {
               ))}
             </div>
 
-            <Button
-              variant="contained"
-              onClick={() => setFinalResultDialogOpen(true)}
-            >
-              Details
-            </Button>
             <HuResultDialog
               open={finalResultDialogOpen}
               onClose={() => setFinalResultDialogOpen(false)}
@@ -225,13 +226,22 @@ function App() {
                   </ToggleButtonGroup>
                 </div>
               </div>
-              <Button
-                style={{ width: "100px", height: "100%" }}
-                variant="contained"
-                onClick={() => handleCalculateClick()}
-              >
-                Calculate
-              </Button>
+              <div style={{ width: 100 }}>
+                <Button
+                  style={{ width: "100%" }}
+                  variant="contained"
+                  onClick={() => handleCalculateClick()}
+                >
+                  Calculate
+                </Button>
+                <Button
+                  style={{ width: "100%" }}
+                  variant="contained"
+                  onClick={() => handleClearClick()}
+                >
+                  Clear
+                </Button>
+              </div>
             </div>
           </div>
 

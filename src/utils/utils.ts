@@ -10,6 +10,7 @@ export type FinalResult = {
   score: number;
   huRules: Rule[];
   mahjongs: Mahjong[];
+  huResult: HuResult;
 };
 
 export type HuGroup = {
@@ -32,7 +33,7 @@ export type OtherGameResult = {
 
 export const calculate = (mahjongs: Mahjong[]): FinalResult => {
   if (mahjongs.length !== 14) {
-    return { score: 0, huRules: [], mahjongs };
+    return { score: 0, huRules: [], mahjongs, huResult: { hu: false } };
   }
   const huResult = checkHu(mahjongs);
 
@@ -59,9 +60,10 @@ export const calculate = (mahjongs: Mahjong[]): FinalResult => {
     }
   }
   return {
-    score,
+    score: !huResult.hu && score === 0 ? -1 : score,
     huRules,
     mahjongs: sortMahjongs(mahjongs),
+    huResult,
   };
 };
 
@@ -102,7 +104,7 @@ export const recurse = (
         );
         // if pair
       } else if (pairs.length === 0 && pending[0].name === pending[1].name) {
-        res = recurse(groups, [pending[0], pending[1]], pending.slice(1));
+        res = recurse(groups, [pending[0], pending[1]], pending.slice(2));
       } else if ((pending[0] as NormalMahjong).number != null) {
         let nextNum = (pending[0] as NormalMahjong).number + 1;
         const type = pending[0].type;
