@@ -35,13 +35,26 @@ export const calculate = (mahjongs: Mahjong[]): FinalResult => {
     return { score: 0, huRules: [], mahjongs };
   }
   const huResult = checkHu(mahjongs);
+  console.log(huResult);
+
   let score = 0;
   let excludeRules = new Set();
   let huRules = [];
 
   for (let i = 0; i < rules.length; i++) {
-    if (!excludeRules.has(i + 1)) {
+    if (!excludeRules.has(rules[i].name)) {
       const { check, score: ruleScore, excludeOtherRules } = rules[i];
+      console.log(
+        "check",
+        rules[i].name,
+        check(huResult, mahjongs, {
+          //TODO
+          gang: 0,
+          hua: 0,
+          jufeng: "东",
+          menfeng: "东",
+        })
+      );
       if (
         check(huResult, mahjongs, {
           //TODO
@@ -97,7 +110,7 @@ export const recurse = (
             },
           ],
           pairs,
-          pending.slice(2)
+          pending.slice(3)
         );
         // if pair
       } else if (pairs.length === 0 && pending[0].name === pending[1].name) {
@@ -154,19 +167,6 @@ export const checkHu = (mahjongs: Mahjong[]) => {
 export const sortMahjongs = (mahjongs: Mahjong[]) => {
   const sortedMahjongs = [...mahjongs];
   sortedMahjongs.sort((a, b) => {
-    const numa = isNormalMahjong(a) ? a.number : 0;
-    const numb = isNormalMahjong(b) ? b.number : 0;
-    console.log(
-      a.name,
-      b.name,
-      numa,
-      numb,
-      a.type === b.type,
-      a.type > b.type,
-      numa > numb,
-      numa === numb
-    );
-
     if (a.type !== b.type) {
       return a.type > b.type ? 1 : -1;
     } else {
@@ -175,7 +175,6 @@ export const sortMahjongs = (mahjongs: Mahjong[]) => {
       return numa > numb ? 1 : numa === numb ? 0 : -1;
     }
   });
-  console.log(sortedMahjongs);
   return sortedMahjongs;
 };
 
