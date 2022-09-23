@@ -10,7 +10,7 @@ export type MahjongTileProps = {
 
 export const MahjongTile = ({ mahjong, onClick }: MahjongTileProps) => {
   return (
-    <IconButton style={{ padding: 0 }}>
+    <IconButton style={{ padding: 0 }} onClick={onClick}>
       <div
         style={{
           height: 40,
@@ -20,7 +20,6 @@ export const MahjongTile = ({ mahjong, onClick }: MahjongTileProps) => {
           backgroundImage: `url(${Front})`,
           backgroundSize: "cover",
         }}
-        onClick={onClick}
       >
         <img
           style={{ height: "100%", width: "100%" }}

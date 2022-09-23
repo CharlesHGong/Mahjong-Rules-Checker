@@ -8,7 +8,7 @@ import { rules, Rule } from "./rules";
 
 export type FinalResult = {
   score: number;
-  huRules: Rule[];
+  huRules: { rule: Rule; multiplier: number }[];
   mahjongs: Mahjong[];
   huResult: HuResult;
 };
@@ -44,18 +44,17 @@ export const calculate = (mahjongs: Mahjong[]): FinalResult => {
   for (let i = 0; i < rules.length; i++) {
     if (!excludeRules.has(rules[i].name)) {
       const { check, score: ruleScore, excludeOtherRules } = rules[i];
-      if (
-        check(huResult, mahjongs, {
-          //TODO
-          gang: 0,
-          hua: 0,
-          jufeng: "东",
-          menfeng: "东",
-        })
-      ) {
-        score += ruleScore;
+      const res = check(huResult, mahjongs, {
+        gang: 0,
+        hua: 0,
+        jufeng: "东",
+        menfeng: "东",
+      });
+      if (res) {
+        const multiplier = res ? (res === true ? 1 : res) : 0;
+        score += ruleScore * multiplier;
         excludeOtherRules.forEach((r) => excludeRules.add(r));
-        huRules.push(rules[i]);
+        huRules.push({ rule: rules[i], multiplier: multiplier });
       }
     }
   }
@@ -86,6 +85,11 @@ export const recurse = (
       }
       return { hu: false };
     default:
+      // if pair
+      if (pairs.length === 0 && pending[0].name === pending[1].name) {
+        res = recurse(groups, [pending[0], pending[1]], pending.slice(2));
+        if (res.hu) return res;
+      }
       // if ke
       if (
         (pending[0].name === pending[1].name,
@@ -102,9 +106,6 @@ export const recurse = (
           pairs,
           pending.slice(3)
         );
-        // if pair
-      } else if (pairs.length === 0 && pending[0].name === pending[1].name) {
-        res = recurse(groups, [pending[0], pending[1]], pending.slice(2));
       } else if ((pending[0] as NormalMahjong).number != null) {
         let nextNum = (pending[0] as NormalMahjong).number + 1;
         const type = pending[0].type;

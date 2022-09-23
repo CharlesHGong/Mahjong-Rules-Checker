@@ -52,10 +52,12 @@ export function HuResultDialog(props: HuResultDialogProps) {
 
         <div>
           <div>Hu Rules</div>
-          {finalResult.huRules.map((rule) => (
+          {finalResult.huRules.map(({ rule, multiplier }) => (
             <div style={{ display: "flex", justifyContent: "space-around" }}>
               <div>{rule.name}</div>
-              <div>{rule.score}</div>
+              <div>
+                {rule.score} * {multiplier}
+              </div>
             </div>
           ))}
         </div>
