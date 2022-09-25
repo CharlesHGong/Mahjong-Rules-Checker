@@ -1,6 +1,7 @@
 import {
   isNormalMahjong,
   Mahjong,
+  mahjongs as allMahjongs,
   NormalMahjong,
   windType,
 } from "../configs/mahjongs";
@@ -92,9 +93,10 @@ export const recurse = (
       }
       // if ke
       if (
-        (pending[0].name === pending[1].name,
-        pending[0].name === pending[2].name)
+        pending[0].name === pending[1].name &&
+        pending[0].name === pending[2].name
       ) {
+        console.log(pending[0], pending[1], pending[2])
         res = recurse(
           [
             ...groups,
@@ -106,7 +108,10 @@ export const recurse = (
           pairs,
           pending.slice(3)
         );
-      } else if ((pending[0] as NormalMahjong).number != null) {
+        if (res.hu) return res;
+      } 
+      // if shun
+      if (pending[0].type !== "字") {
         let nextNum = (pending[0] as NormalMahjong).number + 1;
         const type = pending[0].type;
         const ind = [0];
@@ -134,6 +139,7 @@ export const recurse = (
             pending.filter((_, i) => !ind.includes(i))
           );
         }
+        if (res.hu) return res;
       }
   }
   return res;
@@ -154,6 +160,16 @@ export const checkHu = (mahjongs: Mahjong[]) => {
   }
   return recurse([], [], sortedMahjongs);
 };
+
+export const calculateTing = (mahjongs: Mahjong[]) => {
+  const ting = []
+  for (const mj of allMahjongs) {
+    if (checkHu(mahjongs.concat([mj])).hu) {
+      ting.push(mj);
+    }
+  }
+  return ting;
+}
 
 export const sortMahjongs = (mahjongs: Mahjong[]) => {
   const sortedMahjongs = [...mahjongs];

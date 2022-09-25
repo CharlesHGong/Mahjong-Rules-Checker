@@ -729,7 +729,7 @@ export const checkRule59: CheckRule = (huResult, mahjongs) => {
   return (
     huResult.hu &&
     huResult.groups.filter(
-      (g) => g.type === "刻" && dragonType.includes(g.mahjongs[0].type)
+      (g) => g.type === "刻" && dragonType.includes(g.mahjongs[0].name)
     ).length
   );
 };
