@@ -1,8 +1,11 @@
+import React from 'react';
+
 type ProfileProps = {
   direction: "row" | "column";
   score: number;
   name: string;
 };
+
 export const Profile = ({ direction, score, name }: ProfileProps) => {
   return (
     <div style={{ display: "flex", flexDirection: direction }}>

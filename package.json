@@ -1,7 +1,9 @@
 {
-  "name": "mahjong",
+  "name": "@app/mahjong",
   "version": "0.1.0",
   "private": true,
+  "homepage": "./",
+  "main": "src/App.tsx",
   "dependencies": {
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
@@ -15,7 +17,7 @@
     "@types/react-dom": "^18.0.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
+    "react-scripts": "3.4.1",
     "typescript": "^4.7.4",
     "web-vitals": "^2.1.4"
   },

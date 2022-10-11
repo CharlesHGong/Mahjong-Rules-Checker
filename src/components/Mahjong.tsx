@@ -1,3 +1,4 @@
+import React from 'react';
 import { IconButton } from "@mui/material";
 import { TileImages } from "../assets/tiles";
 import { Mahjong } from "../configs/mahjongs";

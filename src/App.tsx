@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState } from "react";
+import React, { useState } from "react";
 import { defaultGame } from "./configs/config";
 import {
   Mahjong,
