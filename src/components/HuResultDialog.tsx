@@ -5,7 +5,6 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Typography,
 } from "@mui/material";
 import { FinalResult } from "../utils/utils";
 import { MahjongTile } from "./Mahjong";
