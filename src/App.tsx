@@ -1,6 +1,5 @@
 import "./App.css";
 import React, { useState } from "react";
-import { defaultGame } from "./configs/config";
 import {
   Mahjong,
   mahjongs,
@@ -20,21 +19,6 @@ import {
 } from "@mui/material";
 import { FinalResult } from "./utils/utils";
 import { HuResultDialog } from "./components/HuResultDialog";
-
-type Player = {
-  name: string;
-  score: number;
-};
-
-const finalResultStyle = {
-  display: "grid",
-  gridTemplateColumns: "repeat(7, 1fr)",
-  rowGap: 10,
-};
-
-type Game = {
-  players: Player[];
-};
 
 const positions = [
   "一",
@@ -60,20 +44,21 @@ const defaultOtherGameResult: OtherGameResult = {
   menfeng: windType[0],
 };
 
+const defaultResult = {
+  score: 0,
+  huRules: [],
+  mahjongs: [],
+  huResult: { hu: false } as const,
+};
+
 function App() {
-  const [game, setGame] = useState<Game>(defaultGame);
   const [otherGameResult, setOtherGameResult] = useState<OtherGameResult>(
     defaultOtherGameResult
   );
   const [finalResultDialogOpen, setFinalResultDialogOpen] = useState(false);
   const [selectedMahjongs, setSelectedMahjongs] = useState<Mahjong[]>([]);
   const [tingResult, setTingResult] = useState<Mahjong[]>([]);
-  const [lastResult, setLastResult] = useState<FinalResult>({
-    score: 0,
-    huRules: [],
-    mahjongs: [],
-    huResult: { hu: false },
-  });
+  const [lastResult, setLastResult] = useState<FinalResult>(defaultResult);
 
   const handleSelectMahjongs = (mahjong: Mahjong) => {
     if (selectedMahjongs.length < 14) {
@@ -91,6 +76,8 @@ function App() {
 
   const handleClearClick = () => {
     setSelectedMahjongs([]);
+    setTingResult([]);
+    setLastResult(defaultResult);
   };
 
   const handleBackClick = () => {
