@@ -8,7 +8,7 @@ import {
   sameUpsideDownMahjongNames,
   isYaoJiu,
 } from "../configs/mahjongs";
-import { arrayEquals, HuResult, OtherGameResult } from "./utils";
+import { arrayEquals, calculateTing, HuResult, OtherGameResult } from "./utils";
 
 export type CheckRule = (
   huResult: HuResult,
@@ -88,7 +88,7 @@ const oneNineMahjongNames = ["一", "九"].flatMap((n) =>
 //十三幺
 export const checkRule7: CheckRule = (_, mahjongs) => {
   const yao = [...oneNineMahjongNames, ...windType, ...dragonType];
-  return yao.every(name => mahjongs.some(mj => mj.name === name));
+  return yao.every((name) => mahjongs.some((mj) => mj.name === name));
 };
 
 //清幺九
@@ -948,22 +948,43 @@ export const checkRule76: CheckRule = (huResult, mahjongs) => {
   return huResult.hu && mahjongs.every((mj) => isNormalMahjong(mj));
 };
 
-//TODO
 //边张
 export const checkRule77: CheckRule = (huResult, mahjongs) => {
-  return false;
+  const tingMj = mahjongs[mahjongs.length - 1];
+  return (
+    huResult.hu &&
+    huResult.groups.some(
+      (group) =>
+        group.type === "顺" &&
+        // 789 ting 7
+        ((group.mahjongs[0].name === tingMj.name &&
+          isNormalMahjong(tingMj) &&
+          tingMj.number === 7) ||
+          // 123 ting 3
+          (group.mahjongs[2].name === tingMj.name &&
+            isNormalMahjong(tingMj) &&
+            tingMj.number === 3))
+    )
+  );
 };
 
-//TODO
 //坎张
 export const checkRule78: CheckRule = (huResult, mahjongs) => {
-  return false;
+  const tingMj = mahjongs[mahjongs.length - 1];
+  return (
+    huResult.hu &&
+    huResult.groups.some(
+      (group) => group.type === "顺" && group.mahjongs[1].name === tingMj.name
+    )
+  );
 };
 
-//TODO
 //单钓
 export const checkRule79: CheckRule = (huResult, mahjongs) => {
-  return false;
+  return (
+    // eslint-disable-next-line no-restricted-globals
+    huResult.hu && calculateTing(mahjongs.slice(0, length - 1)).length === 1
+  );
 };
 
 //TODO

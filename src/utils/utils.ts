@@ -96,7 +96,6 @@ export const recurse = (
         pending[0].name === pending[1].name &&
         pending[0].name === pending[2].name
       ) {
-        console.log(pending[0], pending[1], pending[2])
         res = recurse(
           [
             ...groups,
@@ -109,7 +108,7 @@ export const recurse = (
           pending.slice(3)
         );
         if (res.hu) return res;
-      } 
+      }
       // if shun
       if (pending[0].type !== "字") {
         let nextNum = (pending[0] as NormalMahjong).number + 1;
@@ -161,15 +160,15 @@ export const checkHu = (mahjongs: Mahjong[]) => {
   return recurse([], [], sortedMahjongs);
 };
 
-export const calculateTing = (mahjongs: Mahjong[]) => {
-  const ting = []
+export const calculateTing = (mahjongs: Mahjong[]): Mahjong[] => {
+  const ting = [];
   for (const mj of allMahjongs) {
     if (checkHu(mahjongs.concat([mj])).hu) {
       ting.push(mj);
     }
   }
   return ting;
-}
+};
 
 export const sortMahjongs = (mahjongs: Mahjong[]) => {
   const sortedMahjongs = [...mahjongs];
