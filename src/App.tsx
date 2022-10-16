@@ -12,6 +12,7 @@ import { calculate, calculateTing, OtherGameResult } from "./utils/utils";
 import { MahjongTile } from "./components/Mahjong";
 import {
   Button,
+  ButtonGroup,
   Grid,
   ToggleButton,
   ToggleButtonGroup,
@@ -97,40 +98,34 @@ function App() {
   };
 
   return (
-    <div
-      className="App"
-      style={{ height: "100%", width: "100%", position: "relative" }}
-    >
+    <div className="App">
       <div style={{ width: "100%" }}>
-        <div>
-          <Typography variant="h5">
-            Final Result: {lastResult.score}
-            <Button
-              variant="text"
-              onClick={() => setFinalResultDialogOpen(true)}
-              size="small"
-            >
-              Details
-            </Button>
-          </Typography>
-          <div style={finalResultStyle}>
-            {lastResult.mahjongs.map((mj) => (
-              <MahjongTile
-                mahjong={mj}
-                onClick={() => handleSelectMahjongs(mj)}
-              />
-            ))}
+        <HuResultDialog
+          open={finalResultDialogOpen}
+          onClose={() => setFinalResultDialogOpen(false)}
+          finalResult={lastResult}
+        />
+
+        <div
+          style={{
+            position: "sticky",
+            top: 0,
+            background: "white",
+            zIndex: "100",
+          }}
+        >
+          <div>
+            <Typography variant="h5">
+              Final Result: {lastResult.score}
+              <Button
+                variant="text"
+                onClick={() => setFinalResultDialogOpen(true)}
+                size="small"
+              >
+                Details
+              </Button>
+            </Typography>
           </div>
-
-          <HuResultDialog
-            open={finalResultDialogOpen}
-            onClose={() => setFinalResultDialogOpen(false)}
-            finalResult={lastResult}
-          />
-        </div>
-
-        <div>
-          <Typography variant="h5">Selected mahjongs</Typography>
           <table>
             <tbody>
               <tr>
@@ -165,90 +160,75 @@ function App() {
           </table>
 
           <div>
+            <ButtonGroup variant="outlined" size="small">
+              <Button onClick={() => handleCalculateClick()}>Calculate</Button>
+              <Button onClick={() => handleBackClick()}>Back</Button>
+              <Button onClick={() => handleClearClick()}>Clear</Button>
+            </ButtonGroup>
+          </div>
+
+          <div>
             听:{" "}
             {tingResult.map((mj) => (
               <MahjongTile mahjong={mj} />
             ))}
           </div>
+        </div>
 
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              margin: "10px 30px",
-            }}
-          >
-            <div style={{ flexGrow: 1 }}>
-              <div style={{ height: 30, textAlign: "left" }}>
-                杠
-                <ToggleButtonGroup
-                  style={{ height: 20 }}
-                  value={otherGameResult.gang}
-                  exclusive
-                  onChange={(_, v: number) =>
-                    setOtherGameResult({ ...otherGameResult, gang: v })
-                  }
-                >
-                  <ToggleButton value={0}>0</ToggleButton>
-                  <ToggleButton value={1}>1</ToggleButton>
-                  <ToggleButton value={2}>2</ToggleButton>
-                  <ToggleButton value={3}>3</ToggleButton>
-                  <ToggleButton value={4}>4</ToggleButton>
-                </ToggleButtonGroup>
-              </div>
-              <div style={{ height: 30, textAlign: "left" }}>
-                圈风
-                <ToggleButtonGroup
-                  style={{ height: 20 }}
-                  value={otherGameResult.jufeng}
-                  exclusive
-                  onChange={(_, v: typeof windType[number]) =>
-                    setOtherGameResult({ ...otherGameResult, jufeng: v })
-                  }
-                >
-                  {windType.map((wt) => (
-                    <ToggleButton value={wt}>{wt}</ToggleButton>
-                  ))}
-                </ToggleButtonGroup>
-              </div>
-              <div style={{ height: 30, textAlign: "left" }}>
-                门风
-                <ToggleButtonGroup
-                  style={{ height: 20 }}
-                  value={otherGameResult.menfeng}
-                  exclusive
-                  onChange={(_, v: typeof windType[number]) =>
-                    setOtherGameResult({ ...otherGameResult, menfeng: v })
-                  }
-                >
-                  {windType.map((wt) => (
-                    <ToggleButton value={wt}>{wt}</ToggleButton>
-                  ))}
-                </ToggleButtonGroup>
-              </div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            margin: "10px 30px",
+          }}
+        >
+          <div style={{ flexGrow: 1 }}>
+            <div style={{ height: 30, textAlign: "left" }}>
+              杠
+              <ToggleButtonGroup
+                style={{ height: 20 }}
+                value={otherGameResult.gang}
+                exclusive
+                onChange={(_, v: number) =>
+                  setOtherGameResult({ ...otherGameResult, gang: v })
+                }
+              >
+                <ToggleButton value={0}>0</ToggleButton>
+                <ToggleButton value={1}>1</ToggleButton>
+                <ToggleButton value={2}>2</ToggleButton>
+                <ToggleButton value={3}>3</ToggleButton>
+                <ToggleButton value={4}>4</ToggleButton>
+              </ToggleButtonGroup>
             </div>
-            <div style={{ width: 100 }}>
-              <Button
-                style={{ width: "100%" }}
-                variant="contained"
-                onClick={() => handleCalculateClick()}
+            <div style={{ height: 30, textAlign: "left" }}>
+              圈风
+              <ToggleButtonGroup
+                style={{ height: 20 }}
+                value={otherGameResult.jufeng}
+                exclusive
+                onChange={(_, v: typeof windType[number]) =>
+                  setOtherGameResult({ ...otherGameResult, jufeng: v })
+                }
               >
-                Calculate
-              </Button>
-              <Button
-                style={{ width: "100%" }}
-                variant="contained"
-                onClick={() => handleBackClick()}
+                {windType.map((wt) => (
+                  <ToggleButton value={wt}>{wt}</ToggleButton>
+                ))}
+              </ToggleButtonGroup>
+            </div>
+            <div style={{ height: 30, textAlign: "left" }}>
+              门风
+              <ToggleButtonGroup
+                style={{ height: 20 }}
+                value={otherGameResult.menfeng}
+                exclusive
+                onChange={(_, v: typeof windType[number]) =>
+                  setOtherGameResult({ ...otherGameResult, menfeng: v })
+                }
               >
-                Back
-              </Button>
-              <Button
-                style={{ width: "100%" }}
-                variant="contained"
-                onClick={() => handleClearClick()}
-              >
-                Clear
-              </Button>
+                {windType.map((wt) => (
+                  <ToggleButton value={wt}>{wt}</ToggleButton>
+                ))}
+              </ToggleButtonGroup>
             </div>
           </div>
         </div>
